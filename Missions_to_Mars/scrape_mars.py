@@ -6,20 +6,23 @@ def scrape():
     from splinter import Browser
     import time
 
-
-    # Nasa news
-    url = 'https://mars.nasa.gov/news/'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    headline = soup.find_all('div',class_='content_title')[0].text.replace('\n','')
-    headline_paragraph = soup.find_all('div',class_='slide')[0].text.replace('\n','')
-
-    # driver path
+    # open browser
     executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome', **executable_path, headless=False)
+
+    # mars news
+    url = 'https://mars.nasa.gov/news/'
+    browser.visit(url)
+    time.sleep(10)
+    html = browser.html
+    soup = BeautifulSoup(html, 'html.parser')
+
+    headline = soup.find('article').find('div',class_='content_title').text.replace('\n','')
+    headline_paragraph = soup.find('article').find('div',class_='article_teaser_body').text.replace('\n','')
+
+    
 
     #Featured Image 
-    browser = Browser('chrome', **executable_path, headless=False)
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(url)
     html = browser.html
@@ -48,7 +51,6 @@ def scrape():
 
 
     # Mars Hemispheres
-    # browser = Browser('chrome', **executable_path, headless=False)                
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
     hemispheres = ['Valles Marineris',"Cerberus","Schiaparelli","Syrtis Major"]

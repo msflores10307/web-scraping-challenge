@@ -8,7 +8,11 @@ output = {'test':'Testy McTesterpants'}
 # Define the 'MarsDB' database in Mongo
 db = client.MarsDB
 missions = db.mission.find()
-print(missions)
-db.mission.insert_one(output)
+# print(missions)
+# db.mission.insert_one(output)
+
 for mission in missions:
-    print(mission)
+    msg = mission
+    # t = msg['tweet']
+
+print(msg['headline'])
